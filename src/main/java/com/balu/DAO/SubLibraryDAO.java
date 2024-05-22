@@ -5,6 +5,8 @@ import com.balu.entity.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 public class SubLibraryDAO {
         public void save(SubLibrary subLibrary) {
             validateSubLibrary(subLibrary);
@@ -58,6 +60,16 @@ public class SubLibraryDAO {
             if (author.getName() == null || author.getAcademicCredentials() == null) {
                 throw new IllegalArgumentException("Author name and academic credentials cannot be null");
             }
+        }
+    }
+
+    public List<SubLibrary> searchBySubject(String subject, boolean ascending) {
+        String order = ascending ? "asc" : "desc";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM SubLibrary WHERE subject LIKE :subject ORDER BY subject " + order;
+            return session.createQuery(hql, SubLibrary.class)
+                    .setParameter("subject", "%" + subject + "%")
+                    .list();
         }
     }
 }

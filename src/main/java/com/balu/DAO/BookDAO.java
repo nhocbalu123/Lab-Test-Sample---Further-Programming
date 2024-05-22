@@ -5,6 +5,8 @@ import com.balu.entity.Book;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 public class BookDAO {
     public void save(Book book) {
         validateBook(book);  // Validate the book before saving
@@ -67,6 +69,26 @@ public class BookDAO {
                 transaction.rollback();
             }
             e.printStackTrace();
+        }
+    }
+
+    public List<Book> searchByName(String name, boolean ascending) {
+        String order = ascending ? "asc" : "desc";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM Book WHERE name LIKE :name ORDER BY name " + order;
+            return session.createQuery(hql, Book.class)
+                    .setParameter("name", "%" + name + "%")
+                    .list();
+        }
+    }
+
+    public List<Book> searchByDateOfCreation(String dateOfCreation, boolean ascending) {
+        String order = ascending ? "asc" : "desc";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM Book WHERE dateOfCreation LIKE :dateOfCreation ORDER BY dateOfCreation " + order;
+            return session.createQuery(hql, Book.class)
+                    .setParameter("dateOfCreation", "%" + dateOfCreation + "%")
+                    .list();
         }
     }
 }

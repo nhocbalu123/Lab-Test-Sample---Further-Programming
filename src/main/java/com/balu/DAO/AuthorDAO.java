@@ -5,6 +5,8 @@ import com.balu.entity.Author;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 public class AuthorDAO {
     public void save(Author author) {
         validateAuthor(author);
@@ -66,6 +68,26 @@ public class AuthorDAO {
                 transaction.rollback();
             }
             e.printStackTrace();
+        }
+    }
+
+    public List<Author> searchByName(String name, boolean ascending) {
+        String order = ascending ? "asc" : "desc";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM Author WHERE name LIKE :name ORDER BY name " + order;
+            return session.createQuery(hql, Author.class)
+                    .setParameter("name", "%" + name + "%")
+                    .list();
+        }
+    }
+
+    public List<Author> searchByAcademicCredentials(String credentials, boolean ascending) {
+        String order = ascending ? "asc" : "desc";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM Author WHERE academicCredentials LIKE :credentials ORDER BY academicCredentials " + order;
+            return session.createQuery(hql, Author.class)
+                    .setParameter("credentials", "%" + credentials + "%")
+                    .list();
         }
     }
 }

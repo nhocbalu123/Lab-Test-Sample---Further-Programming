@@ -14,8 +14,9 @@ public class LibraryManagementSystem {
         // Create DAO instances
         BookDAO bookDAO = new BookDAO();
         SubLibraryDAO subLibraryDAO = new SubLibraryDAO();
+        AuthorDAO authorDAO = new AuthorDAO();
 
-        // Create Author and Book objects
+        /*// Create Author and Book objects
         Author author = new Author();
         author.setName("nhocbalu");
         author.setAcademicCredentials("PhD");
@@ -32,7 +33,7 @@ public class LibraryManagementSystem {
 
         // Save the SubLibrary and Book
         subLibraryDAO.save(subLibrary);
-        bookDAO.save(book);
+        bookDAO.save(book);*/
 
         /*// Retrieve and update a Book
         Book retrievedBook = bookDAO.getById(book.getId());
@@ -43,6 +44,31 @@ public class LibraryManagementSystem {
             System.out.println("Book not found.");
         }*/
 
+        // Search example
+        List<SubLibrary> subLibraries = subLibraryDAO.searchBySubject("Science", true);
+        for (SubLibrary sl : subLibraries) {
+            System.out.println("SubLibrary ID: " + sl.getId() + ", Subject: " + sl.getSubject());
+        }
+
+//        List<Author> authorsByName = authorDAO.searchByName("John", false);
+//        for (Author author : authorsByName) {
+//            System.out.println("Author: " + author.getName());
+//        }
+//
+//        List<Author> authorsByCredentials = authorDAO.searchByAcademicCredentials("PhD", true);
+//        for (Author author : authorsByCredentials) {
+//            System.out.println("Author: " + author.getAcademicCredentials());
+//        }
+//
+//        List<Book> booksByName = bookDAO.searchByName("Java", true);
+//        for (Book book : booksByName) {
+//            System.out.println("Book: " + book.getName());
+//        }
+//
+//        List<Book> booksByDate = bookDAO.searchByDateOfCreation("2022-01-01", false);
+//        for (Book book : booksByDate) {
+//            System.out.println("Book: " + book.getDateOfCreation());
+//        }
 
         HibernateUtil.shutdown();
     }

@@ -40,4 +40,12 @@ public class SubLibrary {
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
+
+    @Override
+    public String toString() {
+        return "SubLibrary{" +
+                "id=" + id +
+                ", subject='" + subject + '\'' +
+                '}';
+    }
 }
